@@ -61,7 +61,7 @@ def play_round(settings):
         f"{settings['maximum']}. Tienes {settings['attempts']} intentos."
     )
 
-    while attempts_used <= settings["attempts"] and won is False:
+    while attempts_used < settings["attempts"] and won is False:
         guess = read_guess(settings["minimum"], settings["maximum"])
         attempts_used += 1
 

@@ -69,8 +69,10 @@ def play_round(settings):
             continue
         elif guess < settings["minimum"]:
             print("El número es menor que el rango permitido.")
+            attempts_used -= 1;
         elif guess > settings["maximum"]:
             print("El número es mayor que el rango permitido.")
+            attempts_used -= 1;
         elif guess < secret_number:
             print("Muy bajo.")
         elif guess > secret_number:

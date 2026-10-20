@@ -28,7 +28,7 @@ def choose_difficulty():
         return DIFFICULTIES[choice]
 
     print("Opción inválida. Se usará la dificultad Fácil.")
-    return DIFFICULTIES["1"]
+    return DIFFICULTIES["2"]
 
 
 def read_guess(minimum, maximum):
@@ -38,6 +38,33 @@ def read_guess(minimum, maximum):
 
     print("La entrada debe ser un número entero.")
     return None
+
+
+def check_guess(guess, secret_number, settings):
+    """Revisa el intento, muestra una pista y regresa el resultado."""
+    if guess < settings["minimum"]:
+        print("El número es menor que el rango permitido.")
+        return "out_of_range"
+    if guess > settings["maximum"]:
+        print("El número es mayor que el rango permitido.")
+        return "out_of_range"
+    if guess < secret_number:
+        print("Muy bajo.")
+        return "wrong"
+    if guess > secret_number:
+        print("Muy alto.")
+        return "wrong"
+
+    print("¡Correcto!")
+    return "correct"
+
+
+def show_round_result(won, attempts_used, secret_number):
+    """Muestra el mensaje final de la partida."""
+    if won:
+        print(f"Adivinaste en {attempts_used} intentos.")
+    else:
+        print(f"Se acabaron los intentos. El número era {secret_number}.")
 
 
 def calculate_score(attempts_used, maximum_attempts, won):
@@ -53,7 +80,6 @@ def calculate_score(attempts_used, maximum_attempts, won):
 def play_round(settings):
     secret_number = random.randint(settings["minimum"], settings["maximum"])
     attempts_used = 0
-    guess = None
     won = False
 
     print(
@@ -67,24 +93,14 @@ def play_round(settings):
 
         if guess is None:
             continue
-        elif guess < settings["minimum"]:
-            print("El número es menor que el rango permitido.")
-            attempts_used -= 1;
-        elif guess > settings["maximum"]:
-            print("El número es mayor que el rango permitido.")
-            attempts_used -= 1;
-        elif guess < secret_number:
-            print("Muy bajo.")
-        elif guess > secret_number:
-            print("Muy alto.")
-        else:
-            print("¡Correcto!")
+
+        guess_status = check_guess(guess, secret_number, settings)
+        if guess_status == "out_of_range":
+            attempts_used -= 1
+        elif guess_status == "correct":
             won = True
 
-    if won:
-        print(f"Adivinaste en {attempts_used} intentos.")
-    else:
-        print(f"Se acabaron los intentos. El número era {secret_number}.")
+    show_round_result(won, attempts_used, secret_number)
 
     score = calculate_score(attempts_used, settings["attempts"], won)
     return {

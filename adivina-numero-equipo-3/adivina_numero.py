@@ -130,7 +130,7 @@ def play_game(scores):
 
 
 def ask_to_play_again():
-    answer = input("\n¿Quieres jugar otra vez? (s/n): ").lower()
+    answer = input("\n¿Quieres jugar otra vez? (s/n): ").strip().lower()
     if answer == "s" or answer == "si" or answer == "sí":
         return True
     return False
